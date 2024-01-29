@@ -1,4 +1,5 @@
-class Solution {
+class Solution 
+{
 public:
 long long int binarySearch(int n){
     int s=0;
