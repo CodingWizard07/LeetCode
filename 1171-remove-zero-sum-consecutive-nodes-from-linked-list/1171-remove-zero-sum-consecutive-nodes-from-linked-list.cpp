@@ -11,28 +11,36 @@
 class Solution {
 public:
     ListNode* removeZeroSumSublists(ListNode* head) {
+        int prefixSum = 0;
+        unordered_map<int, ListNode*> mp;
         ListNode* dummy = new ListNode(0);
         dummy->next = head;
-        int prefix_sum = 0;
-        std::unordered_map<int, ListNode*> prefix_sums;
-        prefix_sums[0] = dummy;
-        ListNode* current = head;
 
-        while (current) {
-            prefix_sum += current->val;
-            if (prefix_sums.find(prefix_sum) != prefix_sums.end()) {
-                ListNode* to_delete = prefix_sums[prefix_sum]->next;
-                int temp_sum = prefix_sum + to_delete->val;
-                while (to_delete != current) {
-                    prefix_sums.erase(temp_sum);
-                    to_delete = to_delete->next;
-                    temp_sum += to_delete->val;
+        while (head != NULL) {
+            prefixSum += head->val;
+
+            if (prefixSum == 0) {
+                // If the entire sublist sums up to zero, remove it
+                dummy->next = head->next;
+                mp.clear(); // Clear the map
+            } else if (mp.find(prefixSum) != mp.end()) {
+                ListNode* start = mp[prefixSum];
+                ListNode* temp = start;
+                int pSum = prefixSum;
+
+                while (temp != head) {
+                    temp = temp->next;
+                    pSum += temp->val;
+
+                    if (temp != head) {
+                        mp.erase(pSum);
+                    }
                 }
-                prefix_sums[prefix_sum]->next = current->next;
+                start->next = temp->next;
             } else {
-                prefix_sums[prefix_sum] = current;
+                mp[prefixSum] = head;
             }
-            current = current->next;
+            head = head->next;
         }
 
         return dummy->next;
