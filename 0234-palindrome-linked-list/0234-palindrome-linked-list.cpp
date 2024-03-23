@@ -11,27 +11,40 @@
 class Solution {
 public:
     bool isPalindrome(ListNode* head) {
-        auto s = head, f = head;
-        while (f) {
-            s = s->next;
-            f = f->next;
-            if (!f) break;
-            f = f->next;
+        
+       if(head==NULL || head->next == NULL){
+           return head;
+       } 
+        //counting size of array using LL
+        int count = 0;
+        ListNode* listsize = head;
+        while(listsize != NULL){
+            listsize = listsize->next;
+            count++;
+            
         }
         
-        ListNode *prev = nullptr, *curr = s;
-        while (curr) {
-            auto next = curr->next;
-            curr->next = prev;
-            prev = curr;
-            curr = next;
+        int arr[count];
+        int k = 0;
+        ListNode *temp = head;
+        while(temp != NULL){
+            arr[k++]=temp->val;
+            temp=temp->next;
         }
-      
-        while (prev) {
-            if (prev->val != head->val) return false;
-            prev = prev->next;
-            head = head->next;
+        
+        int i=0;
+        int j=count-1;
+        while(i<=j){
+            if(arr[i]!=arr[j]){
+                return false;
+            }
+            else{
+                i++;
+                j--;
+            }
+            
         }
         return true;
+        
     }
 };
