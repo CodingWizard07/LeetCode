@@ -10,41 +10,58 @@
  */
 class Solution {
 public:
+    ListNode* reverse(ListNode* temp){
+        if(temp == nullptr || temp->next == nullptr) {
+            return temp;
+        }
+        ListNode* prev = nullptr;
+        ListNode* curr = temp;
+        ListNode* forward = nullptr;
+        
+        while(curr != nullptr){
+            forward = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = forward;
+        }
+        return prev;
+    }
+    
     bool isPalindrome(ListNode* head) {
+        if(head == nullptr || head->next == nullptr) {
+            return true;
+        } 
         
-       if(head==NULL || head->next == NULL){
-           return head;
-       } 
-        //counting size of array using LL
+        // Counting total number of nodes
         int count = 0;
-        ListNode* listsize = head;
-        while(listsize != NULL){
-            listsize = listsize->next;
+        ListNode* listCount = head;
+        while(listCount != nullptr){
+            listCount = listCount->next;
             count++;
-            
         }
         
-        int arr[count];
-        int k = 0;
-        ListNode *temp = head;
-        while(temp != NULL){
-            arr[k++]=temp->val;
-            temp=temp->next;
+        int n = count / 2;
+        ListNode* temp1 = head;
+        ListNode* temp2 = temp1->next;
+        int i = 0;
+        while(i < n - 1){ // Adjusted loop condition
+            temp1 = temp1->next;
+            temp2 = temp2->next;
+            i++;
         }
         
-        int i=0;
-        int j=count-1;
-        while(i<=j){
-            if(arr[i]!=arr[j]){
+        temp1->next = nullptr;
+        ListNode* head1 = reverse(temp2);
+        
+        while(head != nullptr && head1 != nullptr){
+            if(head->val != head1->val){
                 return false;
             }
             else{
-                i++;
-                j--;
+                head = head->next;
+                head1 = head1->next;
             }
-            
         }
         return true;
-        
     }
 };
