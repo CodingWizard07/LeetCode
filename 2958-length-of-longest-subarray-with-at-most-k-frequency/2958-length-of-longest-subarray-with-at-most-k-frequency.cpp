@@ -5,9 +5,10 @@ public:
         int n = nums.size();
         
         int i = 0;
+        int j=0;
         int output=0;
         
-        for(int j=0;j<n;j++){
+        while(j<n){
             mp[nums[j]]++;
         
             if(mp[nums[j]]>k){
@@ -19,6 +20,7 @@ public:
                 i++;
             }
             output=max(output,j-i+1);
+            j++;
         }
         
         return output;
