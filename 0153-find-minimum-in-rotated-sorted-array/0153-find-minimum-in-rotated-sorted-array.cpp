@@ -7,13 +7,21 @@ public:
         
         while(low <= high)
         {
+            
+            if(nums[low] <= nums[high]){
+                k = min(k, nums[low]);
+                break;
+            }
+            
             int mid = low +(high-low)/2;
+            
             //if sorted array is the left part
             if(nums[low] <= nums[mid])
             {
                 k = min(k, nums[low]);
                 low = mid+1;
             }
+            
             //if sorted array is in right part
             else if(nums[mid] <= nums[high])
             {
@@ -21,6 +29,7 @@ public:
                 high = mid-1;
             }
         }
+        
         return k;
     }
 };
