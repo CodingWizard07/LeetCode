@@ -9,22 +9,21 @@
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
-        ListNode* temp = head;
-        ListNode* tail = head;
+      
+    unordered_map<ListNode*, bool> mp;
     
-        //moving tail and temp till noany linked node is gained
-        while(tail !=NULL && tail->next !=NULL){
-            tail= tail->next->next;
-            temp=temp->next;
-            
-            
-            //if tail and temp come at same point
-            if(tail == temp){
-                
-                return true;
-            }   
+    ListNode* current = head;
+    while (current != nullptr) {
+        if (mp.find(current) != mp.end()) {
+            return true;  // Cycle detected
         }
-        return false;    
+        
+        // Mark this node as visited
+        mp[current] = true;
+        
+        // Move to the next node
+        current = current->next; 
+    }
+        return false;
     }
 };
-    
