@@ -10,58 +10,27 @@
  */
 class Solution {
 public:
-    ListNode* reverse(ListNode* temp){
-        if(temp == nullptr || temp->next == nullptr) {
-            return temp;
-        }
-        ListNode* prev = nullptr;
-        ListNode* curr = temp;
-        ListNode* forward = nullptr;
-        
-        while(curr != nullptr){
-            forward = curr->next;
-            curr->next = prev;
-            prev = curr;
-            curr = forward;
-        }
-        return prev;
-    }
-    
     bool isPalindrome(ListNode* head) {
-        if(head == nullptr || head->next == nullptr) {
+        if(head == NULL)
             return true;
-        } 
-        
-        // Counting total number of nodes
-        int count = 0;
-        ListNode* listCount = head;
-        while(listCount != nullptr){
-            listCount = listCount->next;
-            count++;
+        ListNode* temp = head;
+        stack <int> s;
+        while(temp != NULL)
+        {
+            s.push(temp->val);
+            temp = temp->next;
         }
-        
-        int n = count / 2;
-        ListNode* temp1 = head;
-        ListNode* temp2 = temp1->next;
-        int i = 0;
-        while(i < n - 1){ // Adjusted loop condition
-            temp1 = temp1->next;
-            temp2 = temp2->next;
-            i++;
-        }
-        
-        temp1->next = nullptr;
-        ListNode* head1 = reverse(temp2);
-        
-        while(head != nullptr && head1 != nullptr){
-            if(head->val != head1->val){
-                return false;
+        temp = head;
+        while(temp != NULL)
+        {
+            if (temp->val != s.top()) 
+            {
+                return false;  // Mismatch found, not a palindrome
             }
-            else{
-                head = head->next;
-                head1 = head1->next;
-            }
+            s.pop();
+            temp = temp->next;
         }
+        
         return true;
     }
 };
