@@ -10,27 +10,45 @@
  */
 class Solution {
 public:
-    bool isPalindrome(ListNode* head) {
-        if(head == NULL)
-            return true;
-        ListNode* temp = head;
-        stack <int> s;
-        while(temp != NULL)
-        {
-            s.push(temp->val);
-            temp = temp->next;
-        }
-        temp = head;
-        while(temp != NULL)
-        {
-            if (temp->val != s.top()) 
-            {
-                return false;  // Mismatch found, not a palindrome
-            }
-            s.pop();
-            temp = temp->next;
-        }
-        
-        return true;
+    ListNode* reverseLinkedList(ListNode* head) {
+    if (head == NULL || head->next == NULL) {
+        return head; 
     }
+
+    ListNode* newHead = reverseLinkedList(head->next);
+
+    ListNode* front = head->next;
+    front->next = head;
+    head->next = NULL;
+    return newHead;
+}
+
+bool isPalindrome(ListNode* head) {
+    if (head == NULL || head->next == NULL) {
+        return true; 
+    }
+    
+    ListNode* slow = head;
+    ListNode* fast = head;
+    
+    while (fast->next != NULL && fast->next->next != NULL) {
+        slow = slow->next;  
+        fast = fast->next->next;  
+    }
+    
+    ListNode* newHead = reverseLinkedList(slow->next);
+    ListNode* first = head;  
+    ListNode* second = newHead; 
+    while (second != NULL) {
+        if (first->val != second->val) {
+            reverseLinkedList(newHead); 
+            return false;
+        }
+        first = first->next; 
+        second = second->next;  
+    }
+    
+    reverseLinkedList(newHead);  
+    return true;  
+}
 };
